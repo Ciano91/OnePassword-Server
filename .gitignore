@@ -1,0 +1,8 @@
+
+.idea/
+TestServer.iml
+bin/
+node_modules/
+public/
+routes/
+views/
