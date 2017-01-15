@@ -5,10 +5,10 @@
 const express = require('express');
 const router = express.Router();
 const sha = require('sha1');
-const crypto = require('crypto');
 const User = require('../database/models/user');
 const UserService = require('../services/user');
 const UserErrors = require('../errors/user');
+const GeneralErrors = require('../errors/general');
 
 // register a user
 router.route('/register').post((req, res, next) => {
@@ -18,14 +18,14 @@ router.route('/register').post((req, res, next) => {
 
     // check params
     if (!(email && password)) {
-        return next(UserErrors.InvalidParams);
+        return next(GeneralErrors.InvalidParams);
     }
 
     email = email.trim();
     password = password.trim();
 
     if (email.length == 0 || password.length == 0) {
-        return next(UserErrors.InvalidParams);
+        return next(GeneralErrors.InvalidParams);
     }
 
     let user = {};
@@ -73,14 +73,14 @@ router.route('/login').post((req, res, next) => {
 
     // check data
     if (!(email && password)) {
-        return next(UserErrors.InvalidParams);
+        return next(GeneralErrors.InvalidParams);
     }
 
     email = email.trim();
     password = password.trim();
 
     if (email.length == 0 || password.length == 0) {
-        return next(UserErrors.InvalidParams);
+        return next(GeneralErrors.InvalidParams);
     }
 
     UserService.login(email, sha(password))

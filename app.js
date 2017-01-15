@@ -2,7 +2,9 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const user = require('./controllers/user');
+const website = require('./controllers/website');
 const Error = require('./errors/general');
+const TokenService = require('./services/token');
 
 // parsing the body of POST requests
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -32,11 +34,37 @@ app.use((req, res, next) => {
 
 // controllers
 
+// no auth
+
 // user
 app.use('/user', user);
 
-// error handler
+// auth checker
+app.use((req, res, next) => {
+    const token = req.header('Authorization');
+    if(!token) {
+        return next(Error.NoAuthorization);
+    } else {
+        TokenService.checkToken(token)
+            .then((t) => {
+                if (t != null) {
 
+                    // add authenticated user to request body
+                    req.body.AuthUser = t.user;
+                    return next();
+                } else {
+                    return next(Error.InvalidToken);
+                }
+            })
+    }
+});
+
+// auth
+
+// website
+app.use('/website', website);
+
+// error handler
 app.use((err, req, res, next) => {
 
     // set locals, only providing error in development
