@@ -5,6 +5,7 @@ const assert = require("assert");
 const mongoose = require('mongoose');
 const User = require('./models/user');
 const Token = require('./models/token');
+const Website = require('./models/website');
 
 const Params = {
     user: 'ciano',
@@ -42,5 +43,6 @@ process.on('SIGINT', function() {
 
 module.exports = {
     User: mongoose.model(User.ModelName, User.Schema),
-    Token: mongoose.model(Token.ModelName, Token.Schema)
+    Token: mongoose.model(Token.ModelName, Token.Schema),
+    Website: mongoose.model(Website.ModelName, Website.Schema)
 };

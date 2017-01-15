@@ -8,23 +8,32 @@ const Token = require('../database/models/token');
 
 module.exports = {
 
-    newToken: (user) => {
+    // check if token is valid
+    checkToken: (token) => {
+        return db.Token.findOne({
+            token: token
+        }).populate('user');
+    },
+
+    // create a new token for a user
+    createToken: (user) => {
 
         // new token
         const token = crypto.randomBytes(Token.Model.tokenSize).toString('hex');
 
-        return db.Token.findOneAndUpdate(
-            {
-                'user._id': user._id
-            }, {
-                'token': token,
-                'createdAt': Date.now()
-            }, {
-                upsert: true,
-                new: true,
-                setDefaultsOnInsert: true
-            });
+        let find = {};
+        find[Token.Model.user] = user;
 
+        let update = {};
+        update[Token.Model.token] = token;
+
+        const options = {
+            upsert: true,
+            new: true,
+            setDefaultsOnInsert: true
+        };
+
+        return db.Token.findOneAndUpdate(find, update, options);
     }
 
 };

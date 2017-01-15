@@ -18,7 +18,6 @@ module.exports = {
         },
         password: {
             type: String,
-            unique: true,
             required: true
         }
     }, {
