@@ -8,7 +8,15 @@ const Token = require('../database/models/token');
 
 module.exports = {
 
-    newToken: (user) => {
+    // check if token is valid
+    checkToken: (token) => {
+        return db.Token.findOne({
+            token: token
+        }).populate('user');
+    },
+
+    // create a new token for a user
+    createToken: (user) => {
 
         // new token
         const token = crypto.randomBytes(Token.Model.tokenSize).toString('hex');
@@ -26,12 +34,6 @@ module.exports = {
         };
 
         return db.Token.findOneAndUpdate(find, update, options);
-    },
-
-    checkToken: (token) => {
-        return db.Token.findOne({
-            token: token
-        }).populate('user');
     }
 
 };

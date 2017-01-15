@@ -1,8 +1,8 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
-const user = require('./controllers/user');
-const website = require('./controllers/website');
+const AuthController = require('./controllers/auth');
+const WebsiteController = require('./controllers/website');
 const Error = require('./errors/general');
 const TokenService = require('./services/token');
 
@@ -12,7 +12,8 @@ app.use(bodyParser.json());
 
 // log every request
 app.use((req, res, next) => {
-    console.log(req.method, req.url);
+    const token = req.header('Authorization');
+    console.log(req.method, req.url, token ? token : '');
     next();
 });
 
@@ -34,10 +35,10 @@ app.use((req, res, next) => {
 
 // controllers
 
-// no auth
+// this routes don't need token
 
-// user
-app.use('/user', user);
+// auth
+app.use('/auth', AuthController);
 
 // auth checker
 app.use((req, res, next) => {
@@ -59,10 +60,10 @@ app.use((req, res, next) => {
     }
 });
 
-// auth
+// these routes need token
 
 // website
-app.use('/website', website);
+app.use('/website', WebsiteController);
 
 // error handler
 app.use((err, req, res, next) => {

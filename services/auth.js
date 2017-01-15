@@ -8,6 +8,7 @@ const User = require('../database/models/user');
 
 module.exports = {
 
+    // login
     login: (email, password) => {
         let user = {};
         user[User.Model.email] = email;
@@ -15,19 +16,20 @@ module.exports = {
         return db.User.findOne({
             email: email,
             password: password
+        }).then((user) => {
+            if (user) {
+                return TokenService.createToken(user);
+            } else {
+                return null;
+            }
         })
-            .then((user) => {
-                return TokenService.newToken(user);
-            })
     },
 
+    // register
     register: (user) => {
         return db.User.create(user)
             .then((user) => {
-                return TokenService.newToken(user)
-                    .then((token) => {
-                        return token;
-                    })
+                return TokenService.createToken(user);
             })
     }
 
