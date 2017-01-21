@@ -17,8 +17,8 @@ const Params = {
 // UbWkMB2ypPd9
 
 // const dbConnection = "mongodb://" + Params.user + ":" + Params.pwd + "@ds157268.mlab.com:57268/" + Params.dbName;
-const dbConnection = "mongodb://" + Params.user + ":" + Params.pwd + "@localhost:27017/" + Params.dbName;
-// const dbConnection = "mongodb://heroku_750t5g7f:piqfrdnk4huhbi7koait7sio1j@ds055915.mlab.com:55915/heroku_750t5g7f";
+// const dbConnection = "mongodb://" + Params.user + ":" + Params.pwd + "@localhost:27017/" + Params.dbName;
+const dbConnection = "mongodb://heroku_750t5g7f:piqfrdnk4huhbi7koait7sio1j@ds055915.mlab.com:55915/heroku_750t5g7f";
 
 // promises
 mongoose.Promise = Promise;
