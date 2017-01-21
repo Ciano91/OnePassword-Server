@@ -6,6 +6,7 @@ const path = require('path');
 
 const AuthController = require('./controllers/auth');
 const WebsiteController = require('./controllers/website');
+const PinController = require('./controllers/pin');
 const Error = require('./errors/general');
 const TokenService = require('./services/token');
 
@@ -65,8 +66,8 @@ app.use((req, res, next) => {
             .then((t) => {
                 if (t != null) {
 
-                    // add authenticated user to request body
-                    req.body.AuthUser = t.user;
+                    // add authenticated user to request
+                    req.user = t.user;
                     return next();
                 } else {
                     return next(Error.InvalidToken);
@@ -80,7 +81,11 @@ app.use((req, res, next) => {
 // website
 app.use('/website', WebsiteController);
 
+// pin
+app.use('/pin', PinController);
+
 // error handler
+
 app.use((err, req, res, next) => {
 
     // set locals, only providing error in development

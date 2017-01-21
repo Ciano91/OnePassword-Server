@@ -12,7 +12,7 @@ module.exports = {
     checkToken: (token) => {
         return db.Token.findOne({
             token: token
-        }).populate('user');
+        }).populate(Token.Model.user);
     },
 
     // create a new token for a user

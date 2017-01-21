@@ -3,26 +3,33 @@
  */
 
 const mongoose = require('mongoose');
+const Website = require('./website');
 const User = require('./user');
 
 module.exports = {
-    ModelName: 'Token',
+    ModelName: 'Pin',
     Model: {
-        tokenSize: 16,
-        token: 'token',
+        pinSize: 5,
+        pinValidTime: 60, // seconds
+        pin: 'pin',
         user: 'user',
+        website: 'website',
         createdAt: 'createdAt'
     },
     Schema: new mongoose.Schema({
-        token: {
+        pin: {
             type: String,
             required: true
         },
         user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: User.ModelName,
-            unique: true,
             required: true
+        },
+        website: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: Website.ModelName,
+            unique: true
         },
         createdAt: {
             type: Number,
