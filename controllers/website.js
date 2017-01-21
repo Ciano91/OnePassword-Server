@@ -15,19 +15,25 @@ router.route('/add').post((req, res, next) => {
 
     // check data
     let home = body[Website.Model.home];
+    let pin = body.pin;
+    let loginData = body[Website.Model.loginData];
 
-    if(!home) {
-        return next(GeneralErrors.InvalidParams);
-    }
+    console.log(home + " --- " + pin + " --- " + loginData)
 
-    home = home.trim();
-
-    if(home.length == 0) {
+    if(!(home && pin && loginData)) {
         return next(GeneralErrors.InvalidParams);
     }
 
     let website = {};
+
+    // user
+    website[Website.Model.user] = req.user._id;
+
+    // home
     website[Website.Model.home] = home;
+
+    // login data
+    website[Website.Model.loginData] = loginData;
 
     // icon is not required
     let icon = body[Website.Model.icon];
@@ -35,7 +41,7 @@ router.route('/add').post((req, res, next) => {
         website[Website.Model.icon] = icon;
     }
 
-    WebsiteService.add(website, body.AuthUser._id)
+    WebsiteService.add(website, pin)
         .then((w) => {
 
             let newWebsite = {};
@@ -53,7 +59,7 @@ router.route('/add').post((req, res, next) => {
 
         })
         .catch((err) => {
-            next(WebsitesErrors.WebsiteAlreadyRegistered);
+            next(err);
         });
 
 });
@@ -61,7 +67,7 @@ router.route('/add').post((req, res, next) => {
 // get all user's websites
 router.route('/list').get((req, res, next) => {
 
-    WebsiteService.list(req.body.AuthUser._id)
+    WebsiteService.list(req.user._id)
         .then((websites) => {
 
             // send websites list
@@ -77,12 +83,17 @@ router.route('/list').get((req, res, next) => {
 
 });
 
+// get the login data for a website
+router.route('/login').post((req, res, next) => {
+
+});
+
 // remove a website
 router.route('/remove/:id').get((req, res, next) => {
 
     const websiteId = req.params.id;
 
-    WebsiteService.remove(websiteId, req.body.AuthUser._id)
+    WebsiteService.remove(websiteId, req.user._id)
         .then(() => {
             res.send();
         });

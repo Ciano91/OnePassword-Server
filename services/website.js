@@ -4,6 +4,8 @@
 
 const db = require('../database/db');
 const Website = require('../database/models/website');
+const PinService = require('../services/pin');
+const PinErrors = require('../errors/pin');
 
 module.exports = {
 
@@ -18,9 +20,17 @@ module.exports = {
     },
 
     // add a website to a specific user
-    add: (website, userId) => {
-        website[Website.Model.user] = userId;
-        return db.Website.create(website);
+    add: (website, pin) => {
+
+        // check the token
+        return PinService.checkRegistrationPin(website[Website.Model.user], pin)
+            .then((pin) => {
+                if (pin == null) {
+                    throw PinErrors.InvalidRegistrationPin;
+                } else {
+                    return db.Website.create(website);
+                }
+            });
     },
 
     // remove a website from a specific user
