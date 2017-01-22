@@ -6,6 +6,35 @@ const mongoose = require('mongoose');
 const Website = require('./website');
 const User = require('./user');
 
+let Schema = new mongoose.Schema({
+    pin: {
+        type: String,
+        required: true
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: User.ModelName,
+        required: true
+    },
+    website: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: Website.ModelName
+    },
+    createdAt: {
+        type: Number,
+        default: new Date().getTime()
+    }
+}, {
+    versionKey: false
+});
+
+Schema.index({
+    user: 1,
+    website: 1
+}, {
+    unique: true
+});
+
 module.exports = {
     ModelName: 'Pin',
     Model: {
@@ -16,26 +45,5 @@ module.exports = {
         website: 'website',
         createdAt: 'createdAt'
     },
-    Schema: new mongoose.Schema({
-        pin: {
-            type: String,
-            required: true
-        },
-        user: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: User.ModelName,
-            required: true
-        },
-        website: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: Website.ModelName,
-            unique: true
-        },
-        createdAt: {
-            type: Number,
-            default: new Date().getTime()
-        }
-    }, {
-        versionKey: false
-    })
+    Schema: Schema
 };

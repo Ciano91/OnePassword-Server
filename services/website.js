@@ -9,16 +9,6 @@ const PinErrors = require('../errors/pin');
 
 module.exports = {
 
-    // list all websites for a specific user
-    list: (userId) => {
-        let query = {};
-        query[Website.Model.user] = userId;
-
-        const fields = Website.Model.home + " " + Website.Model.icon;
-
-        return db.Website.find(query, fields);
-    },
-
     // add a website to a specific user
     add: (website, pin) => {
 
@@ -31,6 +21,32 @@ module.exports = {
                     return db.Website.create(website);
                 }
             });
+    },
+
+    // list all websites for a specific user
+    list: (userId) => {
+        let query = {};
+        query[Website.Model.user] = userId;
+
+        const fields = Website.Model.home + " " + Website.Model.icon;
+
+        return db.Website.find(query, fields);
+    },
+
+    // get the login data for a website
+    login: (userId, pin) => {
+
+        return PinService.checkLoginPin(userId, pin)
+            .then((pin) => {
+
+                if (pin == null) {
+                    throw PinErrors.InvalidLoginPin;
+                } else {
+                    return pin.website;
+                }
+
+            })
+
     },
 
     // remove a website from a specific user

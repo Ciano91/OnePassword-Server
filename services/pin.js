@@ -20,7 +20,7 @@ module.exports = {
             $gte: new Date().getTime() - (Pin.Model.pinValidTime * 1000)
         };
 
-        return db.Pin.findOne(find);
+        return db.Pin.findOneAndRemove(find);
     },
 
     // check a pin for login in a website
@@ -29,14 +29,11 @@ module.exports = {
         let find = {};
         find[Pin.Model.pin] = pin;
         find[Pin.Model.user] = user;
-        find[Pin.Model.website] = {
-            $ne: null
-        };
         find[Pin.Model.createdAt] = {
             $gte: new Date().getTime() - (Pin.Model.pinValidTime * 1000)
         };
 
-        return db.Pin.findOne(find).populate(Pin.Model.website);
+        return db.Pin.findOneAndRemove(find).populate(Pin.Model.website);
     },
 
     // generate a login pin
@@ -77,11 +74,12 @@ module.exports = {
     },
 
     // generate a registration pin for a user
-    generateRegistrationPin: (user) => {
+    generateRegistrationPin: (userId) => {
 
         // looking for the user
         let find = {};
-        find[Pin.Model.user] = user;
+        find[Pin.Model.user] = userId;
+        find[Pin.Model.website] = null;
 
         // new pin
         let update = {};

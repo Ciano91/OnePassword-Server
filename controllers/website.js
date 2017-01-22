@@ -18,8 +18,6 @@ router.route('/add').post((req, res, next) => {
     let pin = body.pin;
     let loginData = body[Website.Model.loginData];
 
-    console.log(home + " --- " + pin + " --- " + loginData)
-
     if(!(home && pin && loginData)) {
         return next(GeneralErrors.InvalidParams);
     }
@@ -59,7 +57,7 @@ router.route('/add').post((req, res, next) => {
 
         })
         .catch((err) => {
-            next(err);
+            return next(err);
         });
 
 });
@@ -85,6 +83,31 @@ router.route('/list').get((req, res, next) => {
 
 // get the login data for a website
 router.route('/login').post((req, res, next) => {
+    const body = req.body;
+
+    // check data
+    let pin = body.pin;
+
+    if(!pin) {
+        return next(GeneralErrors.InvalidParams);
+    }
+
+    WebsiteService.login(req.user._id, pin)
+        .then((website) => {
+
+            // send websites access data
+            res.format({
+                json: () => {
+                    res.json({
+                        loginData: website.loginData
+                    })
+                }
+            });
+
+        })
+        .catch((err) => {
+            return next(err);
+        })
 
 });
 
