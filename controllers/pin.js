@@ -11,7 +11,7 @@ const PinErrors = require('../errors/pin');
 // generate a registration pin
 router.route('/registration').get((req, res, next) => {
 
-    PinService.generateRegistrationPin(req.user)
+    PinService.generateRegistrationPin(req.user._id)
         .then((pin) => {
 
             // send new registration pin
@@ -23,7 +23,8 @@ router.route('/registration').get((req, res, next) => {
                 }
             });
 
-        });
+        })
+        .catch((err) => console.error(err))
 
 });
 
