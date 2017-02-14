@@ -47,7 +47,7 @@ app.use((req, res, next) => {
 
 // home
 app.get('/', (req, res, next) => {
-    res.send('<h1>One Password</h1><h3>Marco Cianetti, Giordano Cristini, Ilenia Pacella</h3>')
+    res.sendFile(path.join(__dirname + '/pages/home.html'));
 });
 
 // favicon
