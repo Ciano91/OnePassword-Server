@@ -1,14 +1,22 @@
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+const fs = require('fs');
+const path = require('path');
+const useragent = require('express-useragent');
+
 const AuthController = require('./controllers/auth');
 const WebsiteController = require('./controllers/website');
+const PinController = require('./controllers/pin');
 const Error = require('./errors/general');
 const TokenService = require('./services/token');
 
 // parsing the body of POST requests
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+// User-Agent parser
+app.use(useragent.express());
 
 // log every request
 app.use((req, res, next) => {
@@ -35,7 +43,19 @@ app.use((req, res, next) => {
 
 // controllers
 
-// this routes don't need token
+// these routes don't need token
+
+// home
+app.get('/', (req, res, next) => {
+    res.send('<h1>One Password</h1><h3>Marco Cianetti, Giordano Cristini, Ilenia Pacella</h3>')
+});
+
+// favicon
+app.get('/favicon.ico', (req, res, next) => {
+    const faviconPath = path.join(__dirname, 'favicon.ico');
+    res.header('Content-Type', 'image/x-icon');
+    fs.createReadStream(faviconPath).pipe(res);
+});
 
 // auth
 app.use('/auth', AuthController);
@@ -50,8 +70,8 @@ app.use((req, res, next) => {
             .then((t) => {
                 if (t != null) {
 
-                    // add authenticated user to request body
-                    req.body.AuthUser = t.user;
+                    // add authenticated user to request
+                    req.user = t.user;
                     return next();
                 } else {
                     return next(Error.InvalidToken);
@@ -65,7 +85,11 @@ app.use((req, res, next) => {
 // website
 app.use('/website', WebsiteController);
 
+// pin
+app.use('/pin', PinController);
+
 // error handler
+
 app.use((err, req, res, next) => {
 
     // set locals, only providing error in development

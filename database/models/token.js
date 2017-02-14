@@ -21,12 +21,11 @@ module.exports = {
         user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: User.ModelName,
-            unique: true,
             required: true
         },
         createdAt: {
-            type: Date,
-            default: Date.now()
+            type: Number,
+            default: new Date().getTime()
         }
     }, {
         versionKey: false

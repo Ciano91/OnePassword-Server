@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const User = require('./models/user');
 const Token = require('./models/token');
 const Website = require('./models/website');
+const Pin = require('./models/pin');
 
 const Params = {
     user: 'ciano',
@@ -16,7 +17,8 @@ const Params = {
 // UbWkMB2ypPd9
 
 // const dbConnection = "mongodb://" + Params.user + ":" + Params.pwd + "@ds157268.mlab.com:57268/" + Params.dbName;
-const dbConnection = "mongodb://" + Params.user + ":" + Params.pwd + "@localhost:27017/" + Params.dbName;
+// const dbConnection = "mongodb://" + Params.user + ":" + Params.pwd + "@localhost:27017/" + Params.dbName;
+const dbConnection = "mongodb://heroku_750t5g7f:piqfrdnk4huhbi7koait7sio1j@ds055915.mlab.com:55915/heroku_750t5g7f";
 
 // promises
 mongoose.Promise = Promise;
@@ -44,5 +46,6 @@ process.on('SIGINT', function() {
 module.exports = {
     User: mongoose.model(User.ModelName, User.Schema),
     Token: mongoose.model(Token.ModelName, Token.Schema),
-    Website: mongoose.model(Website.ModelName, Website.Schema)
+    Website: mongoose.model(Website.ModelName, Website.Schema),
+    Pin: mongoose.model(Pin.ModelName, Pin.Schema)
 };

@@ -7,6 +7,9 @@ const error = require('./error');
 module.exports = {
 
     // add
-    WebsiteAlreadyRegistered: error(500, 'website_already_registered')
+    WebsiteAlreadyRegistered: error(500, 'website_already_registered'),
+
+    // not registered
+    WebsiteNotRegistered: error(500, 'website_not_registered')
 
 };

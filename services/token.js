@@ -12,28 +12,21 @@ module.exports = {
     checkToken: (token) => {
         return db.Token.findOne({
             token: token
-        }).populate('user');
+        }).populate(Token.Model.user);
     },
 
     // create a new token for a user
     createToken: (user) => {
 
         // new token
-        const token = crypto.randomBytes(Token.Model.tokenSize).toString('hex');
+        const stringToken = crypto.randomBytes(Token.Model.tokenSize).toString('hex');
 
-        let find = {};
-        find[Token.Model.user] = user;
+        let token = {};
+        token[Token.Model.token] = stringToken;
+        token[Token.Model.user] = user;
+        token[Token.Model.createdAt] = new Date().getTime();
 
-        let update = {};
-        update[Token.Model.token] = token;
-
-        const options = {
-            upsert: true,
-            new: true,
-            setDefaultsOnInsert: true
-        };
-
-        return db.Token.findOneAndUpdate(find, update, options);
+        return db.Token.create(token);
     }
 
 };

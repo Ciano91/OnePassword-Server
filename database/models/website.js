@@ -10,6 +10,10 @@ let Schema = new mongoose.Schema({
         type: String,
         required: true
     },
+    loginData: {
+        type: String,
+        required: true
+    },
     icon: {
         type: String
     },
@@ -35,7 +39,8 @@ module.exports = {
         id: '_id',
         home: 'home',
         icon: 'icon',
-        user: 'user'
+        user: 'user',
+        loginData: 'loginData'
     },
     Schema: Schema
 };
