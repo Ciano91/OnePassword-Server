@@ -21,7 +21,6 @@ module.exports = {
         user: {
             type: mongoose.Schema.Types.ObjectId,
             ref: User.ModelName,
-            unique: true,
             required: true
         },
         createdAt: {

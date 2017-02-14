@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
+const useragent = require('express-useragent');
 
 const AuthController = require('./controllers/auth');
 const WebsiteController = require('./controllers/website');
@@ -13,6 +14,9 @@ const TokenService = require('./services/token');
 // parsing the body of POST requests
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
+// User-Agent parser
+app.use(useragent.express());
 
 // log every request
 app.use((req, res, next) => {
@@ -39,7 +43,7 @@ app.use((req, res, next) => {
 
 // controllers
 
-// this routes don't need token
+// these routes don't need token
 
 // home
 app.get('/', (req, res, next) => {
