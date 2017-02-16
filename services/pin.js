@@ -24,11 +24,10 @@ module.exports = {
     },
 
     // check a pin for login in a website
-    checkLoginPin: (user, pin) => {
+    checkLoginPin: (pin) => {
 
         let find = {};
         find[Pin.Model.pin] = pin;
-        find[Pin.Model.user] = user;
         find[Pin.Model.createdAt] = {
             $gte: new Date().getTime() - (Pin.Model.pinValidTime * 1000)
         };
