@@ -92,7 +92,7 @@ router.route('/login').post((req, res, next) => {
         return next(GeneralErrors.InvalidParams);
     }
 
-    WebsiteService.login(req.user._id, pin)
+    WebsiteService.login(pin)
         .then((website) => {
 
             // send websites access data

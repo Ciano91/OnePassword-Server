@@ -34,9 +34,9 @@ module.exports = {
     },
 
     // get the login data for a website
-    login: (userId, pin) => {
+    login: (pin) => {
 
-        return PinService.checkLoginPin(userId, pin)
+        return PinService.checkLoginPin(pin)
             .then((pin) => {
 
                 if (pin == null) {
