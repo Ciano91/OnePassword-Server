@@ -9,6 +9,13 @@ const WebsiteService = require('../services/website');
 const WebsitesErrors = require('../errors/website');
 const GeneralErrors = require('../errors/general');
 
+const Icons = {
+    amazon: 'https://lh3.googleusercontent.com/-c9bKgaRfC3Q/AAAAAAAAAAI/AAAAAAAAJUE/Eo2MLCqyiZs/photo.jpg',
+    facebook: 'http://centerlyne.com/wp-content/uploads/2016/07/logo-facebook.png',
+    google: 'https://yt3.ggpht.com/-v0soe-ievYE/AAAAAAAAAAI/AAAAAAAAAAA/OixOH_h84Po/s900-c-k-no-mo-rj-c0xffffff/photo.jpg',
+    dropbox: 'https://www.dropbox.com/static/images/about/dropbox_logo_glyph_2015.svg'
+};
+
 // add a website
 router.route('/add').post((req, res, next) => {
     const body = req.body;
@@ -68,11 +75,22 @@ router.route('/list').get((req, res, next) => {
     WebsiteService.list(req.user._id)
         .then((websites) => {
 
+            // set the icons
+            let newWebsites = websites.map((website) => {
+                if(!website.icon) {
+                    let icon = getIcon(website.home);
+                    if(icon) {
+                        website.icon = icon;
+                    }
+                }
+                return website;
+            });
+
             // send websites list
             res.format({
                 json: () => {
                     res.json({
-                        websites: websites
+                        websites: newWebsites
                     })
                 }
             });
@@ -118,9 +136,18 @@ router.route('/remove/:id').get((req, res, next) => {
 
     WebsiteService.remove(websiteId, req.user._id)
         .then(() => {
-            res.send();
+            res.json({});
         });
 
 });
+
+function getIcon(url) {
+    for(const siteName of Object.keys(Icons)) {
+        if(url.includes(siteName)) {
+            return Icons[siteName];
+        }
+    }
+    return null;
+}
 
 module.exports = router;

@@ -25,6 +25,13 @@ module.exports = {
         })
     },
 
+    // logout
+    logout: (user) => {
+        return db.Token.findOneAndRemove({
+            token: user.token
+        });
+    },
+
     // register
     register: (user) => {
         return db.User.create(user)

@@ -52,6 +52,14 @@ router.route('/login').post((req, res, next) => {
 
 });
 
+// logout
+router.route('/logout').get((req, res, next) => {
+    AuthService.logout(req.user)
+        .then(() => {
+            res.json({});
+        });
+});
+
 // register a user
 router.route('/register').post((req, res, next) => {
     const body = req.body;
