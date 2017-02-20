@@ -38,7 +38,7 @@ Schema.index({
 module.exports = {
     ModelName: 'Pin',
     Model: {
-        pinSize: 5,
+        pinSize: 3,
         pinValidTime: 60, // seconds
         pin: 'pin',
         user: 'user',

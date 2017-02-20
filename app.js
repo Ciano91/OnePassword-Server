@@ -57,26 +57,36 @@ app.get('/favicon.ico', (req, res, next) => {
     fs.createReadStream(faviconPath).pipe(res);
 });
 
-// auth
-app.use('/auth', AuthController);
-
-// auth checker
+// set user using token
 app.use((req, res, next) => {
     const token = req.header('Authorization');
-    if(!token) {
-        return next(Error.NoAuthorization);
-    } else {
+    if(token) {
         TokenService.checkToken(token)
             .then((t) => {
                 if (t != null) {
 
                     // add authenticated user to request
-                    req.user = t.user;
-                    return next();
-                } else {
-                    return next(Error.InvalidToken);
+                    req.user = {
+                        _id: t.user._id,
+                        token: token
+                    };
                 }
+                return next();
             })
+    } else {
+        return next();
+    }
+});
+
+// auth
+app.use('/auth', AuthController);
+
+// auth checker
+app.use((req, res, next) => {
+    if(!req.user) {
+        return next(Error.InvalidToken);
+    } else {
+        return next();
     }
 });
 
