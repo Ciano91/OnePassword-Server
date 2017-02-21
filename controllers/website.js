@@ -13,7 +13,9 @@ const Icons = {
     amazon: 'https://lh3.googleusercontent.com/-c9bKgaRfC3Q/AAAAAAAAAAI/AAAAAAAAJUE/Eo2MLCqyiZs/photo.jpg',
     facebook: 'http://centerlyne.com/wp-content/uploads/2016/07/logo-facebook.png',
     google: 'https://yt3.ggpht.com/-v0soe-ievYE/AAAAAAAAAAI/AAAAAAAAAAA/OixOH_h84Po/s900-c-k-no-mo-rj-c0xffffff/photo.jpg',
-    dropbox: 'https://www.dropbox.com/static/images/about/dropbox_logo_glyph_2015.svg'
+    dropbox: 'http://www.iconsdb.com/icons/preview/caribbean-blue/dropbox-xxl.png',
+    twitter: 'http://icons.iconarchive.com/icons/uiconstock/socialmedia/512/Twitter-icon.png',
+    linkedin: 'https://cdn3.iconfinder.com/data/icons/free-social-icons/67/linkedin_circle_color-512.png'
 };
 
 // add a website
