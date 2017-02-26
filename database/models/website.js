@@ -17,6 +17,10 @@ let Schema = new mongoose.Schema({
     icon: {
         type: String
     },
+    iv: {
+        type: String,
+        required: true
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: User.ModelName,
