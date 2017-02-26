@@ -6,6 +6,7 @@ const db = require('../database/db');
 const Website = require('../database/models/website');
 const PinService = require('../services/pin');
 const PinErrors = require('../errors/pin');
+const Crypto = require('../utils/Crypto');
 
 module.exports = {
 
@@ -18,7 +19,17 @@ module.exports = {
                 if (pin == null) {
                     throw PinErrors.InvalidRegistrationPin;
                 } else {
-                    return db.Website.create(website);
+                    return db.User.findOne({
+                        _id: website[Website.Model.user]
+                    }).then((user) => {
+                        let key = user.password;
+
+                        let encrypt = Crypto.Aes.encrypt(website[Website.Model.loginData], key);
+                        website[Website.Model.loginData] = encrypt.encryptedData;
+                        website[Website.Model.iv] = encrypt.iv;
+
+                        return db.Website.create(website);
+                    });
                 }
             });
     },
@@ -42,7 +53,17 @@ module.exports = {
                 if (pin == null) {
                     throw PinErrors.InvalidLoginPin;
                 } else {
-                    return pin.website;
+
+                    return db.User.findOne({
+                        _id: pin.website[Website.Model.user]
+                    }).then((user) => {
+                        let key = user.password;
+                        let iv = pin.website[Website.Model.iv];
+
+                        pin.website[Website.Model.loginData] = Crypto.Aes.decrypt(pin.website[Website.Model.loginData], key, iv);
+                        return pin.website;
+                    });
+
                 }
 
             })

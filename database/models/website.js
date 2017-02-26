@@ -40,7 +40,8 @@ module.exports = {
         home: 'home',
         icon: 'icon',
         user: 'user',
-        loginData: 'loginData'
+        loginData: 'loginData',
+        iv: 'iv'
     },
     Schema: Schema
 };
