@@ -17,6 +17,10 @@ let Schema = new mongoose.Schema({
     icon: {
         type: String
     },
+    iv: {
+        type: String,
+        required: true
+    },
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: User.ModelName,
@@ -40,7 +44,8 @@ module.exports = {
         home: 'home',
         icon: 'icon',
         user: 'user',
-        loginData: 'loginData'
+        loginData: 'loginData',
+        iv: 'iv'
     },
     Schema: Schema
 };
